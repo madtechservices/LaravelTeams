@@ -1,6 +1,6 @@
 # madtechservices/LaravelTeams
-[![Latest Stable Version](https://madtechservices.com.au/laravel/teams/downloads)](https://madtechservices.com.au/laravel/teams/download)
 
+Modified to work in conjunction with Spatie Permissions without conflict. Spatie for general permissions and LaravelTeams for teams related permissions. A work in progress and will move away from the original pacage.
 A Laravel package for managing teams and user permissions, supporting multi-tenant dynamic roles, role groups, and team-specific permissions.
 
 Users can be organized into groups within teams, each with custom permissions and abilities. Permissions assigned to a user group override individual user permissions within a team.
