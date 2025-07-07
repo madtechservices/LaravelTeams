@@ -10,12 +10,10 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('entity_ability', static function (Blueprint $table) {
+        Schema::create('team_entity_permission', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ability_id')->constrained()->cascadeOnDelete();
-            $table->morphs('entity');
-            $table->boolean('forbidden');
-            $table->timestamps();
+            $table->morphs('team_entity');
+            $table->foreignId('permission_id')->constrained('team_permissions')->cascadeOnDelete();
         });
     }
 
@@ -24,6 +22,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('entity_ability');
+        Schema::dropIfExists('team_entity_permission');
     }
 };

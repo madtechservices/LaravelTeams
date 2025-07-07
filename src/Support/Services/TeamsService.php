@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Support\Services;
+namespace Madtechservices\LaravelTeams\Support\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
@@ -18,7 +18,7 @@ class TeamsService
 
     public function __construct()
     {
-        $this->models = Config::get('teams.models');
+        $this->models = Config::get('laravelteams.models');
     }
 
     /**

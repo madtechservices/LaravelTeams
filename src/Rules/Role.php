@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Rules;
+namespace Madtechservices\LaravelTeams\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;

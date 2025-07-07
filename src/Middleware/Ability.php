@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Middleware;
+namespace Madtechservices\LaravelTeams\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class Ability extends Teams
      */
     public function handle(Request $request, Closure $next, string $ability, ...$models): mixed
     {
-        if (! $this->authorization($request, 'ability', $ability, null, $models)) {
+        if (! $this->authorization($request, 'team_ability', $ability, null, $models)) {
             return $this->unauthorized();
         }
 

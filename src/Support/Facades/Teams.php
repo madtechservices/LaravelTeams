@@ -1,9 +1,9 @@
 <?php
 
-namespace Jurager\Teams\Support\Facades;
+namespace Madtechservices\LaravelTeams\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Jurager\Teams\Support\Services\TeamsService;
+use Madtechservices\LaravelTeams\Support\Services\TeamsService;
 
 /**
  * @method static string model(string $model)

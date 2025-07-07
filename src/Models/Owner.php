@@ -1,11 +1,12 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use JsonSerializable;
 
 class Owner implements JsonSerializable
 {
+    
     /**
      * The key identifier for the role.
      */

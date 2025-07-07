@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
@@ -10,7 +11,7 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create(Config::get('teams.tables.teams', 'teams'), static function (Blueprint $table) {
+        Schema::create(Config::get('laravelteams.tables.teams', 'teams'), static function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->index();
             $table->string('name');
@@ -23,6 +24,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists(Config::get('teams.tables.teams', 'teams'));
+        Schema::dropIfExists(Config::get('laravelteams.tables.teams', 'teams'));
     }
 };

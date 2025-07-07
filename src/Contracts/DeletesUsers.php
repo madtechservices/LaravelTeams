@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Contracts;
+namespace Madtechservices\LaravelTeams\Contracts;
 
 interface DeletesUsers
 {

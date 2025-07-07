@@ -40,13 +40,13 @@ return [
     */
     'models' => [
         'user' => App\Models\User::class,
-        'team' => Jurager\Teams\Models\Team::class,
-        'ability' => Jurager\Teams\Models\Ability::class,
-        'permission' => Jurager\Teams\Models\Permission::class,
-        'group' => Jurager\Teams\Models\Group::class,
-        'invitation' => Jurager\Teams\Models\Invitation::class,
-        'membership' => Jurager\Teams\Models\Membership::class,
-        'role' => Jurager\Teams\Models\Role::class,
+        'team' => Madtechservices\LaravelTeams\Models\Team::class,
+        'ability' => Madtechservices\LaravelTeams\Models\Ability::class,
+        'permission' => Madtechservices\LaravelTeams\Models\Permission::class,
+        'group' => Madtechservices\LaravelTeams\Models\Group::class,
+        'invitation' => Madtechservices\LaravelTeams\Models\Invitation::class,
+        'membership' => Madtechservices\LaravelTeams\Models\Membership::class,
+        'role' => Madtechservices\LaravelTeams\Models\Role::class,
     ],
 
     /*

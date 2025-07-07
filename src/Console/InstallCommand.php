@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Console;
+namespace Madtechservices\LaravelTeams\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -12,14 +12,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'teams:install';
+    protected $signature = 'laravelteams:install';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Publish the teams package migrations and creates additional directories';
+    protected $description = 'Publish the laravelteams package migrations and creates additional directories';
 
     /**
      * Execute the console command.
@@ -33,9 +33,9 @@ class InstallCommand extends Command
         }
 
         // Publish...
-        $this->call('vendor:publish', ['--tag' => 'teams-config', '--force' => true]);
-        $this->call('vendor:publish', ['--tag' => 'teams-migrations', '--force' => true]);
-        $this->call('vendor:publish', ['--tag' => 'teams-views', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'laravelteams-config', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'laravelteams-migrations', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'laravelteams-views', '--force' => true]);
 
         // Directories...
         (new Filesystem())->ensureDirectoryExists(app_path('Actions/Teams'));

@@ -2,8 +2,8 @@
 
 namespace App\Actions\Teams;
 
-use Jurager\Teams\Contracts\DeletesTeams;
-use Jurager\Teams\Contracts\DeletesUsers;
+use Madtechservices\LaravelTeams\Contracts\DeletesTeams;
+use Madtechservices\LaravelTeams\Contracts\DeletesUsers;
 
 class DeleteUser implements DeletesUsers
 {

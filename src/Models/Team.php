@@ -1,10 +1,10 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Traits\HasMembers;
+use Madtechservices\LaravelTeams\Traits\HasMembers;
 
 class Team extends Model
 {
@@ -32,6 +32,6 @@ class Team extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = Config::get('teams.tables.teams', 'teams');
+        $this->table = Config::get('laravelteams.tables.teams', 'teams');
     }
 }

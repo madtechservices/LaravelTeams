@@ -1,15 +1,15 @@
 <?php
 
-namespace Jurager\Teams;
+namespace Madtechservices\LaravelTeams;
 
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Jurager\Teams\Support\Services\TeamsService;
-use Jurager\Teams\Middleware\Ability as AbilityMiddleware;
-use Jurager\Teams\Middleware\Permission as PermissionMiddleware;
-use Jurager\Teams\Middleware\Role as RoleMiddleware;
+use Madtechservices\LaravelTeams\Support\Services\TeamsService;
+use Madtechservices\LaravelTeams\Middleware\Ability as AbilityMiddleware;
+use Madtechservices\LaravelTeams\Middleware\Permission as PermissionMiddleware;
+use Madtechservices\LaravelTeams\Middleware\Role as RoleMiddleware;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -20,7 +20,7 @@ class TeamsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/teams.php', 'teams');
+        $this->mergeConfigFrom(__DIR__.'/../config/laravelteams.php', 'laravelteams');
     }
 
     /**
@@ -39,7 +39,7 @@ class TeamsServiceProvider extends ServiceProvider
         $this->registerFacades();
         $this->registerMiddlewares();
 
-        if (Config::get('teams.invitations.enabled') && Config::get('teams.invitations.routes.register')) {
+        if (Config::get('laravelteams.invitations.enabled') && Config::get('laravelteams.invitations.routes.register')) {
             $this->registerRoutes();
         }
     }
@@ -55,29 +55,29 @@ class TeamsServiceProvider extends ServiceProvider
 
         $migrations = [
             __DIR__ . '/../database/migrations/create_teams_table.php' => database_path('migrations/2019_12_14_000001_create_teams_table.php'),
-            __DIR__ . '/../database/migrations/create_permissions_table.php' => database_path('migrations/2019_12_14_000002_create_permissions_table.php'),
-            __DIR__ . '/../database/migrations/create_roles_table.php' => database_path('migrations/2019_12_14_000003_create_roles_table.php'),
+            __DIR__ . '/../database/migrations/create_team_permissions_table.php' => database_path('migrations/2019_12_14_000002_create_team_permissions_table.php'),
+            __DIR__ . '/../database/migrations/create_team_roles_table.php' => database_path('migrations/2019_12_14_000003_create_team_roles_table.php'),
             __DIR__ . '/../database/migrations/create_team_user_table.php' => database_path('migrations/2019_12_14_000005_create_team_user_table.php'),
-            __DIR__ . '/../database/migrations/create_abilities_table.php' => database_path('migrations/2019_12_14_000006_create_abilities_table.php'),
-            __DIR__ . '/../database/migrations/create_entity_ability_table.php' => database_path('migrations/2019_12_14_000006_create_entity_ability_table.php'),
-            __DIR__ . '/../database/migrations/create_groups_table.php' => database_path('migrations/2019_12_14_000008_create_groups_table.php'),
-            __DIR__ . '/../database/migrations/create_group_user_table.php' => database_path('migrations/2019_12_14_000009_create_group_user_table.php'),
-            __DIR__ . '/../database/migrations/create_entity_permission_table.php' => database_path('migrations/2019_12_14_000010_create_entity_permission_table.php'),
+            __DIR__ . '/../database/migrations/create_team_abilities_table.php' => database_path('migrations/2019_12_14_000006_create_team_abilities_table.php'),
+            __DIR__ . '/../database/migrations/create_team_entity_ability_table.php' => database_path('migrations/2019_12_14_000006_create_team_entity_ability_table.php'),
+            __DIR__ . '/../database/migrations/create_team_groups_table.php' => database_path('migrations/2019_12_14_000008_create_team_groups_table.php'),
+            __DIR__ . '/../database/migrations/create_team_group_user_table.php' => database_path('migrations/2019_12_14_000009_create_team_group_user_table.php'),
+            __DIR__ . '/../database/migrations/create_team_entity_permission_table.php' => database_path('migrations/2019_12_14_000010_create_team_entity_permission_table.php'),
         ];
 
-        if (Config::get('teams.invitations.enabled')) {
-            $migrations[__DIR__ . '/../database/migrations/create_invitations_table.php'] = database_path('migrations/2019_12_14_000012_create_invitations_table.php');
+        if (Config::get('laravelteams.invitations.enabled')) {
+            $migrations[__DIR__ . '/../database/migrations/create_team_invitations_table.php'] = database_path('migrations/2019_12_14_000012_create_team_invitations_table.php');
         }
 
         $this->publishes([
-            __DIR__.'/../config/teams.php' => config_path('teams.php')
-        ], 'teams-config');
+            __DIR__.'/../config/laravelteams.php' => config_path('laravelteams.php')
+        ], 'laravelteams-config');
 
-        $this->publishes($migrations, 'teams-migrations');
+        $this->publishes($migrations, 'laravelteams-migrations');
 
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/teams')
-        ], 'teams-views');
+        ], 'laravelteams-views');
     }
 
     /**
@@ -110,8 +110,7 @@ class TeamsServiceProvider extends ServiceProvider
     protected function registerRoutes(): void
     {
         Route::group([
-            'prefix' => Config::get('teams.routes.prefix', '/'),
-            'middleware' => Config::get('teams.routes.middleware', 'web'),
+            'middleware' => Config::get('laravelteams.invitations.routes.middleware', 'web'),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
@@ -125,7 +124,7 @@ class TeamsServiceProvider extends ServiceProvider
      */
     protected function registerMiddlewares(): void
     {
-        if (! $this->app['config']->get('teams.middleware.register')) {
+        if (! $this->app['config']->get('laravelteams.middleware.register')) {
             return;
         }
 

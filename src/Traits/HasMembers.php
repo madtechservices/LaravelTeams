@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Traits;
+namespace Madtechservices\LaravelTeams\Traits;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
-use Jurager\Teams\Events\AddingTeamMember;
-use Jurager\Teams\Events\TeamMemberAdded;
-use Jurager\Teams\Events\TeamMemberRemoved;
-use Jurager\Teams\Events\TeamMemberUpdated;
-use Jurager\Teams\Models\Owner;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Events\AddingTeamMember;
+use Madtechservices\LaravelTeams\Events\TeamMemberAdded;
+use Madtechservices\LaravelTeams\Events\TeamMemberRemoved;
+use Madtechservices\LaravelTeams\Events\TeamMemberUpdated;
+use Madtechservices\LaravelTeams\Models\Owner;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 use RuntimeException;
 
 trait HasMembers
@@ -36,7 +36,7 @@ trait HasMembers
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Teams::model('user'), Teams::model('membership'), Config::get('teams.foreign_keys.team_id', 'team_id'))
+        return $this->belongsToMany(Teams::model('user'), Teams::model('membership'), Config::get('laravelteams.foreign_keys.team_id', 'team_id'))
             ->withPivot('role_id')
             ->withTimestamps()
             ->as('membership');
@@ -49,7 +49,7 @@ trait HasMembers
      */
     public function abilities(): HasMany
     {
-        return $this->hasMany(Teams::model('ability'), Config::get('teams.foreign_keys.team_id', 'team_id'), 'id');
+        return $this->hasMany(Teams::model('ability'), Config::get('laravelteams.foreign_keys.team_id', 'team_id'), 'id');
     }
 
     /**
@@ -59,7 +59,7 @@ trait HasMembers
      */
     public function roles(): HasMany
     {
-        return $this->hasMany(Teams::model('role'), Config::get('teams.foreign_keys.team_id', 'team_id'), 'id');
+        return $this->hasMany(Teams::model('role'), Config::get('laravelteams.foreign_keys.team_id', 'team_id'), 'id');
     }
 
     /**
@@ -69,7 +69,7 @@ trait HasMembers
      */
     public function groups(): HasMany
     {
-        return $this->hasMany(Teams::model('group'), Config::get('teams.foreign_keys.team_id', 'team_id'), 'id');
+        return $this->hasMany(Teams::model('group'), Config::get('laravelteams.foreign_keys.team_id', 'team_id'), 'id');
     }
 
     /**
@@ -79,7 +79,7 @@ trait HasMembers
      */
     public function invitations(): HasMany
     {
-        return $this->hasMany(Teams::model('invitation'), Config::get('teams.foreign_keys.team_id', 'team_id'), 'id');
+        return $this->hasMany(Teams::model('invitation'), Config::get('laravelteams.foreign_keys.team_id', 'team_id'), 'id');
     }
 
     /**
@@ -436,7 +436,7 @@ trait HasMembers
      */
     public function getPermissionIds(array $codes): array
     {
-        $teamIdField = Config::get('teams.foreign_keys.team_id', 'team_id');
+        $teamIdField = Config::get('laravelteams.foreign_keys.team_id', 'team_id');
 
         $permissions = Teams::model('permission')::query()
             ->where($teamIdField, $this->id)

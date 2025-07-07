@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Middleware;
+namespace Madtechservices\LaravelTeams\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class Permission extends Teams
      */
     public function handle(Request $request, Closure $next, string|array $permissions, ?string $teamId = null, bool $options = false): mixed
     {
-        if (! $this->authorization($request, 'permission', $permissions, $teamId, [], $options)) {
+        if (! $this->authorization($request, 'team_permission', $permissions, $teamId, [], $options)) {
             return $this->unauthorized();
         }
 

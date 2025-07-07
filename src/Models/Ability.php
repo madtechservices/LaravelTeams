@@ -1,12 +1,12 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 
 class Ability extends Model
 {
@@ -15,13 +15,14 @@ class Ability extends Model
      *
      * @var array<string>
      */
+    protected $table = 'team_abilities';
     protected $fillable = ['id', 'permission_id', 'title', 'entity_id', 'entity_type'];
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->fillable[] = Config::get('teams.foreign_keys.team_id', 'team_id');
+        $this->fillable[] = Config::get('laravelteams.foreign_keys.team_id', 'team_id');
     }
 
     /**
@@ -39,7 +40,7 @@ class Ability extends Model
      */
     public function users(): MorphToMany
     {
-        return $this->morphedByMany(Teams::model('user'), 'entity', 'entity_ability')
+        return $this->morphedByMany(Teams::model('user'), 'team_entity', 'team_entity_ability')
             ->withPivot('forbidden')
             ->withTimestamps();
     }
@@ -49,7 +50,7 @@ class Ability extends Model
      */
     public function groups(): MorphToMany
     {
-        return $this->morphedByMany(Teams::model('group'), 'entity', 'entity_ability')
+        return $this->morphedByMany(Teams::model('group'), 'team_entity', 'team_entity_ability')
             ->withPivot('forbidden')
             ->withTimestamps();
     }
@@ -59,7 +60,7 @@ class Ability extends Model
      */
     public function roles(): MorphToMany
     {
-        return $this->morphedByMany(Teams::model('role'), 'entity', 'entity_ability')
+        return $this->morphedByMany(Teams::model('role'), 'team_entity', 'team_entity_ability')
             ->withPivot('forbidden')
             ->withTimestamps();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Events;
+namespace Madtechservices\LaravelTeams\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;

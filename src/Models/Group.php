@@ -1,6 +1,6 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 
 class Group extends Model
 {
@@ -17,6 +17,7 @@ class Group extends Model
      *
      * @var array<string>
      */
+    protected $table = 'team_groups';
     protected $fillable = ['code', 'name'];
 
     /**
@@ -32,7 +33,7 @@ class Group extends Model
     {
         parent::__construct($attributes);
 
-        $this->fillable[] = Config::get('teams.foreign_keys.team_id');
+        $this->fillable[] = Config::get('laravelteams.foreign_keys.team_id');
     }
 
     /**
@@ -56,7 +57,7 @@ class Group extends Model
      */
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Teams::model('team'), Config::get('teams.foreign_keys.team_id'));
+        return $this->belongsTo(Teams::model('team'), Config::get('laravelteams.foreign_keys.team_id'));
     }
 
     /**
@@ -66,7 +67,7 @@ class Group extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Teams::model('user'), 'group_user', 'group_id', 'user_id');
+        return $this->belongsToMany(Teams::model('user'), 'team_group_user', 'group_id', 'user_id');
     }
 
     /**
@@ -76,7 +77,7 @@ class Group extends Model
      */
     public function permissions(): MorphToMany
     {
-        return $this->morphToMany(Teams::model('permission'), 'entity', 'entity_permission');
+        return $this->morphToMany(Teams::model('permission'), 'entity', 'team_entity_permission');
     }
 
     /**
@@ -86,7 +87,7 @@ class Group extends Model
      */
     public function abilities(): MorphToMany
     {
-        return $this->morphToMany(Teams::model('ability'), 'entity', 'entity_ability')
+        return $this->morphToMany(Teams::model('ability'), 'entity', 'team_entity_ability')
             ->withPivot('forbidden')
             ->withTimestamps();
     }

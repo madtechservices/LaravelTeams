@@ -1,11 +1,11 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 
 class Invitation extends Model
 {
@@ -14,13 +14,14 @@ class Invitation extends Model
      *
      * @var array<string>
      */
+    protected $table = 'team_invitations';
     protected $fillable = ['email', 'role_id'];
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->fillable[] = Config::get('teams.foreign_keys.team_id');
+        $this->fillable[] = Config::get('laravelteams.foreign_keys.team_id');
     }
 
     /**
@@ -28,7 +29,7 @@ class Invitation extends Model
      */
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Teams::model('team'), Config::get('teams.foreign_keys.team_id'));
+        return $this->belongsTo(Teams::model('team'), Config::get('laravelteams.foreign_keys.team_id'));
     }
 
     /**

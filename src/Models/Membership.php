@@ -1,11 +1,11 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 
 class Membership extends Pivot
 {
@@ -40,7 +40,7 @@ class Membership extends Pivot
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = Config::get('teams.tables.team_user', 'team_user');
+        $this->table = Config::get('laravelteams.tables.team_user', 'team_user');
     }
 
     /**

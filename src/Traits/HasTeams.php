@@ -1,16 +1,16 @@
 <?php
 
-namespace Jurager\Teams\Traits;
+namespace Madtechservices\LaravelTeams\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
-use Jurager\Teams\Models\Owner;
+use Madtechservices\LaravelTeams\Models\Owner;
 
 trait HasTeams
 {
@@ -53,7 +53,7 @@ trait HasTeams
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Teams::model('team'), Teams::model('membership'), 'user_id', Config::get('teams.foreign_keys.team_id'))
+        return $this->belongsToMany(Teams::model('team'), Teams::model('membership'), 'user_id', Config::get('laravelteams.foreign_keys.team_id'))
             ->withoutGlobalScopes()
             ->withPivot('role_id')
             ->withTimestamps()
@@ -67,7 +67,7 @@ trait HasTeams
      */
     public function abilities(): MorphToMany
     {
-        return $this->morphToMany(Teams::model('ability'), 'entity', 'entity_ability')
+        return $this->morphToMany(Teams::model('ability'), 'entity', 'team_entity_ability')
             ->withPivot('forbidden')
             ->withTimestamps();
     }
@@ -79,7 +79,7 @@ trait HasTeams
      */
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Teams::model('group'), 'group_user', 'user_id', 'group_id');
+        return $this->belongsToMany(Teams::model('group'), 'team_group_user', 'user_id', 'group_id');
     }
 
     /**
@@ -90,7 +90,7 @@ trait HasTeams
      */
     public function belongsToTeam(object $team): bool
     {
-        return $this->ownsTeam($team) || $this->teams()->where(Config::get('teams.foreign_keys.team_id', 'team_id'), $team->id)->exists();
+        return $this->ownsTeam($team) || $this->teams()->where(Config::get('laravelteams.foreign_keys.team_id', 'team_id'), $team->id)->exists();
     }
 
     /**
@@ -154,7 +154,7 @@ trait HasTeams
         }
 
         if (!$scope || $scope === 'group') {
-            $groupPermissions = $this->groups()->where(Config::get('teams.foreign_keys.team_id', 'team_id'), $team->id)
+            $groupPermissions = $this->groups()->where(Config::get('laravelteams.foreign_keys.team_id', 'team_id'), $team->id)
                 ->with('permissions')
                 ->get()
                 ->flatMap(fn ($group) => $group->permissions->pluck('code'))
@@ -219,9 +219,9 @@ trait HasTeams
     {
         // Start building the query to retrieve abilities
         $abilities = $this->abilities()->where([
-            Config::get('teams.foreign_keys.team_id', 'team_id') => $team->id,
-            'abilities.entity_id' => $entity->id,
-            'abilities.entity_type' => $entity::class
+            Config::get('laravelteams.foreign_keys.team_id', 'team_id') => $team->id,
+            'team_abilities.entity_id' => $entity->id,
+            'team_abilities.entity_type' => $entity::class
         ]);
 
         // If filtering by forbidden abilities, add the condition
@@ -247,7 +247,7 @@ trait HasTeams
      */
     private function hasGlobalGroupPermissions(string $ability): bool
     {
-        $permissions = $this->groups->whereNull(Config::get('teams.foreign_keys.team_id', 'team_id'))
+        $permissions = $this->groups->whereNull(Config::get('laravelteams.foreign_keys.team_id', 'team_id'))
             ->load('permissions')
             ->flatMap(fn ($group) => $group->permissions->pluck('code'))
             ->toArray();
@@ -301,29 +301,29 @@ trait HasTeams
         });
 
         $permission_ids = Teams::model('permission')::query()
-            ->where(Config::get('teams.foreign_keys.team_id', 'team_id'), $team->id)
+            ->where(Config::get('laravelteams.foreign_keys.team_id', 'team_id'), $team->id)
             ->whereIn('code', $codes)
             ->pluck('id')
             ->all();
 
         $role = $this->teamRole($team)->load(['abilities' => function ($query) use ($action_entity, $permission_ids) {
             $query->where([
-                'abilities.entity_id' => $action_entity->id,
-                'abilities.entity_type' => get_class($action_entity),
+                'team_abilities.entity_id' => $action_entity->id,
+                'team_abilities.entity_type' => get_class($action_entity),
             ])->whereIn('permission_id', $permission_ids);
         }]);
 
-        $groups = $this->groups->where(Config::get('teams.foreign_keys.team_id', 'team_id'), $team->id)->load(['abilities' => function ($query) use ($action_entity, $permission_ids) {
+        $groups = $this->groups->where(Config::get('laravelteams.foreign_keys.team_id', 'team_id'), $team->id)->load(['abilities' => function ($query) use ($action_entity, $permission_ids) {
             $query->where([
-                'abilities.entity_id' => $action_entity->id,
-                'abilities.entity_type' => get_class($action_entity),
+                'team_abilities.entity_id' => $action_entity->id,
+                'team_abilities.entity_type' => get_class($action_entity),
             ])->whereIn('permission_id', $permission_ids);
         }]);
 
         $this->load(['abilities' => function ($query) use ($action_entity, $permission_ids) {
             $query->where([
-                'abilities.entity_id' => $action_entity->id,
-                'abilities.entity_type' => get_class($action_entity),
+                'team_abilities.entity_id' => $action_entity->id,
+                'team_abilities.entity_type' => get_class($action_entity),
             ])->whereIn('permission_id', $permission_ids);
         }]);
 
@@ -399,7 +399,7 @@ trait HasTeams
     private function updateAbilityOnEntity(object $team, string $method, string $permission, object $action_entity, object|null $target_entity = null, bool $forbidden = false): void
     {
         $abilityModel = Teams::instance('ability')->firstOrCreate([
-            Config::get('teams.foreign_keys.team_id', 'team_id') => $team->id,
+            Config::get('laravelteams.foreign_keys.team_id', 'team_id') => $team->id,
             'entity_id' => $action_entity->id,
             'entity_type' => $action_entity::class,
             'permission_id' => $team->getPermissionIds([$permission])[0]

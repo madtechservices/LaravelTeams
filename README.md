@@ -1,8 +1,5 @@
-# Jurager/Teams
-[![Latest Stable Version](https://poser.pugx.org/jurager/teams/v/stable)](https://packagist.org/packages/jurager/teams)
-[![Total Downloads](https://poser.pugx.org/jurager/teams/downloads)](https://packagist.org/packages/jurager/teams)
-[![PHP Version Require](https://poser.pugx.org/jurager/teams/require/php)](https://packagist.org/packages/jurager/teams)
-[![License](https://poser.pugx.org/jurager/teams/license)](https://packagist.org/packages/jurager/teams)
+# madtechservices/LaravelTeams
+[![Latest Stable Version](https://madtechservices.com.au/laravel/teams/downloads)](https://madtechservices.com.au/laravel/teams/download)
 
 A Laravel package for managing teams and user permissions, supporting multi-tenant dynamic roles, role groups, and team-specific permissions.
 
@@ -48,13 +45,13 @@ Installation
 -------------------------------------------
 
 ```sh
-composer require jurager/teams
+composer require madtechservices/LaravelTeams
 ```
 
 Always **do backups**, next command **may overwrite your actual data.**
 
 ```sh
-php artisan teams:install
+php artisan LaravelTeams:install
 ```
 Run the migrations
 
@@ -73,7 +70,7 @@ Then, add the `HasTeams` trait to your existing `User` model.
 
 namespace App\Providers;
 
-use Jurager\Teams\Traits\HasTeams;
+use Madtechservices\LaravelTeams\Traits\HasTeams;
 
 class User extends Model {
 
@@ -168,7 +165,7 @@ These methods allow you to efficiently manage and interact with teams, including
 Users
 -------------------------------------------
 
-The `Jurager\Teams\Traits\HasTeams` trait provides methods to inspect a user's teams:
+The `Madtechservices\LaravelTeams\Traits\HasTeams` trait provides methods to inspect a user's teams:
 
 ```php
 // Access the teams that a user belongs to...
@@ -266,7 +263,7 @@ The second argument for `$team->addRole()` is an array of permissions, which det
 
 ### Authorization
 
-To ensure that incoming requests initiated by a team member can be executed by that user, the application needs to verify the permissions of the user's team. This verification can be done using the `hasTeamPermission` method, which is available through the `Jurager\Teams\Traits\HasTeams` trait.
+To ensure that incoming requests initiated by a team member can be executed by that user, the application needs to verify the permissions of the user's team. This verification can be done using the `hasTeamPermission` method, which is available through the `Madtechservices\LaravelTeams\Traits\HasTeams` trait.
 
 > [!NOTE]  
 > In most cases, checking a user's role is often unnecessary. Instead, prioritize verifying specific granular permissions, as roles mainly serve to group these permissions for organizational clarity. Typically, you’ll use this approach within your application's [authorization policies](https://laravel.com/docs/authorization#creating-policies).
@@ -364,7 +361,7 @@ Groups
 
 ### Groups Managing
 
-The `Jurager\Teams\Traits\HasTeams` trait provides methods to inspect a user's team groups:
+The `Madtechservices\LaravelTeams\Traits\HasTeams` trait provides methods to inspect a user's team groups:
 
 ```php
 // Add new group to the team

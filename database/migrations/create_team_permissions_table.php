@@ -11,14 +11,13 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('groups', static function (Blueprint $table) {
+        Schema::create('team_permissions', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Config::get('teams.foreign_keys.team_id', 'team_id'))->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId(Config::get('laravelteams.foreign_keys.team_id', 'team_id'))->constrained()->cascadeOnDelete();
+            $table->string('name')->nullable();
             $table->string('code');
-            $table->string('name');
-            $table->timestamps();
 
-            $table->unique([Config::get('teams.foreign_keys.team_id', 'team_id'), 'code']);
+            $table->unique([Config::get('laravelteams.foreign_keys.team_id', 'team_id'), 'code']);
         });
     }
 
@@ -27,6 +26,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('team_permissions');
     }
 };

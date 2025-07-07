@@ -1,12 +1,12 @@
 <?php
 
-namespace Jurager\Teams\Mail;
+namespace Madtechservices\LaravelTeams\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
-use Jurager\Teams\Models\Invitation as InvitationModel;
+use Madtechservices\LaravelTeams\Models\Invitation as InvitationModel;
 
 class Invitation extends Mailable
 {

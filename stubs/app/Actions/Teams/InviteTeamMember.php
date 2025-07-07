@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Jurager\Teams\Contracts\InvitesTeamMembers;
-use Jurager\Teams\Events\InvitingTeamMember;
-use Jurager\Teams\Mail\Invitation;
-use Jurager\Teams\Rules\Role;
+use Madtechservices\LaravelTeams\Contracts\InvitesTeamMembers;
+use Madtechservices\LaravelTeams\Events\InvitingTeamMember;
+use Madtechservices\LaravelTeams\Mail\Invitation;
+use Madtechservices\LaravelTeams\Rules\Role;
 
 class InviteTeamMember implements InvitesTeamMembers
 {
@@ -34,9 +34,9 @@ class InviteTeamMember implements InvitesTeamMembers
 
         InvitingTeamMember::dispatch($team, $email, $role);
 
-        $role_id = $roleCode ? optional($team->getRole($roleCode))->id : null;
+        $role_id = $role ? optional($team->getRole($role))->id : null;
 
-        $invitation = $team->invitations()->create(compact('email', 'role'));
+        $invitation = $team->invitations()->create(compact('email', 'role_id'));
 
         Mail::to($email)->send(new Invitation($invitation));
     }
@@ -74,7 +74,7 @@ class InviteTeamMember implements InvitesTeamMembers
             'email' => [
                 'required',
                 'email',
-                Rule::unique('invitations')->where(fn ($query) => $query->where(Config::get('teams.foreign_keys.team_id', 'team_id'), $team->id)),
+                Rule::unique('team_invitations')->where(fn ($query) => $query->where(Config::get('laravelteams.foreign_keys.team_id', 'team_id'), $team->id)),
             ],
             'role' => $team->hasRole() ? ['required', 'string', new Role($team)] : null,
         ]);

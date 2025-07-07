@@ -1,11 +1,11 @@
 <?php
 
-namespace Jurager\Teams\Models;
+namespace Madtechservices\LaravelTeams\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Config;
-use Jurager\Teams\Support\Facades\Teams;
+use Madtechservices\LaravelTeams\Support\Facades\Teams;
 
 class Permission extends Model
 {
@@ -14,6 +14,7 @@ class Permission extends Model
      *
      * @var array<string>
      */
+    protected $table = 'team_permissions';
     protected $fillable = ['name', 'code'];
 
     /**
@@ -26,7 +27,7 @@ class Permission extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->fillable[] = Config::get('teams.foreign_keys.team_id');
+        $this->fillable[] = Config::get('laravelteams.foreign_keys.team_id');
     }
 
     /**
@@ -34,7 +35,7 @@ class Permission extends Model
      */
     public function groups(): MorphToMany
     {
-        return $this->morphedByMany(Teams::model('group'), 'entity', 'entity_permission');
+        return $this->morphedByMany(Teams::model('group'), 'entity', 'team_entity_permission');
     }
 
     /**
@@ -42,6 +43,6 @@ class Permission extends Model
      */
     public function roles(): MorphToMany
     {
-        return $this->morphedByMany(Teams::model('role'), 'entity', 'entity_permission');
+        return $this->morphedByMany(Teams::model('role'), 'entity', 'team_entity_permission');
     }
 }

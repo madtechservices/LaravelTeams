@@ -3,8 +3,8 @@
 namespace App\Actions\Teams;
 
 use Illuminate\Support\Facades\Validator;
-use Jurager\Teams\Contracts\CreatesTeams;
-use Jurager\Teams\Events\AddingTeam;
+use Madtechservices\LaravelTeams\Contracts\CreatesTeams;
+use Madtechservices\LaravelTeams\Events\AddingTeam;
 
 class CreateTeam implements CreatesTeams
 {
