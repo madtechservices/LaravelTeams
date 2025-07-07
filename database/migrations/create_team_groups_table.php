@@ -13,7 +13,7 @@ return new class () extends Migration {
     {
         Schema::create('team_groups', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Config::get('laravelteams.foreign_keys.team_id', 'team_id'))->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId(Config::get('laravelteams.foreign_keys.team_id', 'team_id'))->nullable()->constrained(Config::get('laravelteams.tables.teams', 'teams'))->cascadeOnDelete();
             $table->string('code');
             $table->string('name');
             $table->timestamps();

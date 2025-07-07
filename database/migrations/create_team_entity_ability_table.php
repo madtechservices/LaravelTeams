@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('team_entity_ability', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ability_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('ability_id')->constrained('team_abilities')->cascadeOnDelete();
             $table->morphs('team_entity');
             $table->boolean('forbidden');
             $table->timestamps();

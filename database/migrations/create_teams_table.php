@@ -13,7 +13,7 @@ return new class () extends Migration {
     {
         Schema::create(Config::get('laravelteams.tables.teams', 'teams'), static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->string('name');
             $table->timestamps();
         });
